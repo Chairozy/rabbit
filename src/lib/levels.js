@@ -39,13 +39,13 @@ export const LEVELS = [
   },
   {
     id: 5, title: 'Panen Bawah', mode: 'absolute', difficulty: 'Mudah',
-    hint: 'Tiga tomat ke bawah dari (4,1). Ulangi 3x + Jalan bawah.',
-    par: 2, solution: ['Ulangi 3x [Jalan bawah]'],
-    rabbit: { c: 4, r: 1, dir: 'down' },
+    hint: 'Dari (3,1): bawah ke (3,2), kiri ke (2,2), bawah ke (2,3). Urutan Bawah-Kiri-Bawah.',
+    par: 3, solution: ['Jalan bawah', 'Jalan kiri', 'Jalan bawah'],
+    rabbit: { c: 3, r: 1, dir: 'down' },
     collectables: [
-      { c: 4, r: 2, type: 'tomato' },
-      { c: 4, r: 3, type: 'tomato' },
-      { c: 4, r: 4, type: 'tomato' }
+      { c: 3, r: 2, type: 'tomato' },
+      { c: 2, r: 2, type: 'tomato' },
+      { c: 2, r: 3, type: 'tomato' }
     ],
     blocks: [], fences: []
   },
