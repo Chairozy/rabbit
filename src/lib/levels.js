@@ -279,8 +279,8 @@ export const LEVELS = [
   },
   {
     id: 20, title: 'Master Absolut', mode: 'absolute', difficulty: 'Sulit',
-    hint: 'Crate (2,1),(3,3) + pagar timur (2,1),(2,2). Naik-kanan-naik, Lompat kanan lewati pagar (2,2), naik-kanan panen (4,1), turun 3x panen (4,4), kiri 3x lalu naik 3x panen (1,1).',
-    par: 15, solution: ['Jalan atas', 'Jalan kanan', 'Jalan atas', 'Lompat kanan', 'Jalan atas', 'Jalan kanan', 'Jalan bawah x3', 'Jalan kiri x3', 'Jalan atas x3'],
+    hint: 'Crate (2,1),(3,3) + 4 pagar timur/selatan. Naik, Lompat kanan lewati pagar (1,3), naik, Lompat kanan lewati pagar (2,2), naik-kanan panen (4,1), turun 3x panen (4,4), kiri 3x lalu naik 3x panen (1,1).',
+    par: 15, solution: ['Jalan atas', 'Lompat kanan', 'Jalan atas', 'Lompat kanan', 'Jalan atas', 'Jalan kanan', 'Jalan bawah x3', 'Jalan kiri x3', 'Jalan atas x3'],
     rabbit: { c: 1, r: 4, dir: 'up' },
     collectables: [
       { c: 4, r: 1, type: 'pumpkin' },
@@ -289,6 +289,8 @@ export const LEVELS = [
     ],
     blocks: [{ c: 2, r: 1, type: 'crate' }, { c: 3, r: 3, type: 'crate' }],
     fences: [
+      { c: 1, r: 3, side: 'E', type: 'v' },
+      { c: 2, r: 4, side: 'E', type: 'v' },
       { c: 2, r: 1, side: 'E', type: 'v' },
       { c: 2, r: 2, side: 'E', type: 'v' }
     ]
