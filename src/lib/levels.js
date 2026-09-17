@@ -279,8 +279,8 @@ export const LEVELS = [
   },
   {
     id: 20, title: 'Master Absolut', mode: 'absolute', difficulty: 'Sulit',
-    hint: 'Crate (2,1),(3,3) + 4 pagar timur/selatan. Naik, Lompat kanan lewati pagar (1,3), naik, Lompat kanan lewati pagar (2,2), naik-kanan panen (4,1), turun 3x panen (4,4), kiri 3x lalu naik 3x panen (1,1).',
-    par: 15, solution: ['Jalan atas', 'Lompat kanan', 'Jalan atas', 'Lompat kanan', 'Jalan atas', 'Jalan kanan', 'Jalan bawah x3', 'Jalan kiri x3', 'Jalan atas x3'],
+    hint: 'Crate (2,1),(3,3) + 4 pagar. Naik, Lompat kanan lewati pagar (1,3), naik, Lompat kanan lewati pagar (2,2), naik-kanan panen (4,1), turun 3x panen (4,4), kiri, Lompat kiri lewati pagar (2,4), kiri, naik 3x panen (1,1).',
+    par: 16, solution: ['Jalan atas', 'Lompat kanan', 'Jalan atas', 'Lompat kanan', 'Jalan atas', 'Jalan kanan', 'Jalan bawah x3', 'Jalan kiri', 'Lompat kiri', 'Jalan kiri', 'Jalan atas x3'],
     rabbit: { c: 1, r: 4, dir: 'up' },
     collectables: [
       { c: 4, r: 1, type: 'pumpkin' },
