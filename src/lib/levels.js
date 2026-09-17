@@ -448,11 +448,22 @@ export const LEVELS = [
   },
   {
     id: 33, title: 'Belok Kiri Wajib', mode: 'relative', difficulty: 'Sedang',
-    hint: 'Menghadap barat di (4,1), target (4,3) di selatan. Belok kiri 1x lalu Maju 2x.',
-    par: 3, solution: ['Belok kiri', 'Maju x2'],
+    hint: 'Kolom 3-4 disegel pagar selatan. Maju dulu ambil (3,1), putar balik (2x belok kiri), maju, belok kanan, Lompat depan 2x susuri kolom 4 ke (4,3).',
+    par: 7, solution: ['Maju', 'Belok kiri x2', 'Maju', 'Belok kanan', 'Lompat depan x2'],
     rabbit: { c: 4, r: 1, dir: 'left' },
-    collectables: [{ c: 4, r: 3, type: 'pumpkin' }],
-    blocks: [], fences: []
+    collectables: [
+      { c: 4, r: 3, type: 'pumpkin' },
+      { c: 3, r: 1, type: 'tomato' }
+    ],
+    blocks: [],
+    fences: [
+      { c: 4, r: 1, side: 'S', type: 'h' },
+      { c: 4, r: 2, side: 'S', type: 'h' },
+      { c: 4, r: 3, side: 'S', type: 'h' },
+      { c: 3, r: 1, side: 'S', type: 'h' },
+      { c: 3, r: 2, side: 'S', type: 'h' },
+      { c: 3, r: 3, side: 'S', type: 'h' }
+    ]
   },
   {
     id: 34, title: 'Slalom Relatif', mode: 'relative', difficulty: 'Sedang',
