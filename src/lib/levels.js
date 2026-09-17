@@ -170,8 +170,8 @@ export const LEVELS = [
   },
   {
     id: 15, title: 'Panen Silang', mode: 'absolute', difficulty: 'Sedang',
-    hint: 'Mulai di tengah (2,2), 4 sayur di sekeliling. Ambil satu-persatu dan selalu kembali ke tengah.',
-    par: 7, solution: ['Jalan atas', 'Jalan bawah', 'Jalan kanan', 'Jalan kiri', 'Jalan bawah', 'Jalan atas', 'Jalan kiri'],
+    hint: 'Mulai (2,2) terkepung pagar timur dan selatan. Atas-bawah dulu, Lompat kanan-kiri ambil tomat, Lompat bawah-atas ambil jagung, terakhir kiri ambil kubis.',
+    par: 7, solution: ['Jalan atas', 'Jalan bawah', 'Lompat kanan', 'Lompat kiri', 'Lompat bawah', 'Lompat atas', 'Jalan kiri'],
     rabbit: { c: 2, r: 2, dir: 'up' },
     collectables: [
       { c: 2, r: 1, type: 'pumpkin' },
@@ -179,7 +179,12 @@ export const LEVELS = [
       { c: 2, r: 3, type: 'corn' },
       { c: 1, r: 2, type: 'cabbage' }
     ],
-    blocks: [], fences: []
+    blocks: [{ c: 1, r: 1, type: 'crate' }],
+    fences: [
+      { c: 2, r: 2, side: 'S', type: 'h' },
+      { c: 3, r: 2, side: 'S', type: 'h' },
+      { c: 2, r: 2, side: 'E', type: 'v' }
+    ]
   },
   {
     id: 16, title: 'Kurung Balok U', mode: 'absolute', difficulty: 'Sulit',
