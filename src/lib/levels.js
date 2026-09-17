@@ -209,8 +209,8 @@ export const LEVELS = [
   },
   {
     id: 17, title: 'Ular Raksasa', mode: 'absolute', difficulty: 'Sulit',
-    hint: 'Menyusuri ular: kanan x3, atas, kiri + Lompat kiri lewati pagar (2,3) + kiri, atas, kanan x3, atas. Baris 1 ditutup balok kecuali (4,1).',
-    par: 12, solution: ['Jalan kanan x3', 'Jalan atas', 'Jalan kiri', 'Lompat kiri', 'Jalan kiri', 'Jalan atas', 'Jalan kanan x3', 'Jalan atas'],
+    hint: 'Menyusuri ular: kanan, Lompat kanan lewati pagar (2,4), kanan, atas, kiri + Lompat kiri lewati pagar (2,3) + kiri, atas, kanan x3, atas. Pagar selatan (3,2),(4,2) menutup jalan pintas.',
+    par: 12, solution: ['Jalan kanan', 'Lompat kanan', 'Jalan kanan', 'Jalan atas', 'Jalan kiri', 'Lompat kiri', 'Jalan kiri', 'Jalan atas', 'Jalan kanan x3', 'Jalan atas'],
     rabbit: { c: 1, r: 4, dir: 'right' },
     collectables: [
       { c: 4, r: 4, type: 'corn' },
@@ -222,7 +222,12 @@ export const LEVELS = [
       { c: 2, r: 1, type: 'crate' },
       { c: 3, r: 1, type: 'crate' }
     ],
-    fences: [{ c: 2, r: 3, side: 'E', type: 'v' }]
+    fences: [
+      { c: 2, r: 3, side: 'E', type: 'v' },
+      { c: 2, r: 4, side: 'E', type: 'v' },
+      { c: 3, r: 2, side: 'S', type: 'h' },
+      { c: 4, r: 2, side: 'S', type: 'h' }
+    ]
   },
   {
     id: 18, title: 'Kandang Pagar', mode: 'absolute', difficulty: 'Sulit',
