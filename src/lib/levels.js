@@ -250,17 +250,32 @@ export const LEVELS = [
   },
   {
     id: 19, title: 'Pesta Panen', mode: 'absolute', difficulty: 'Sulit',
-    hint: 'Lima sayur sekali jalan: Ulangi 3x kanan menyusuri atas, Ulangi 3x bawah menyusuri kanan, Ulangi 3x kiri menyusuri bawah.',
-    par: 6, solution: ['Ulangi 3x [Jalan kanan]', 'Ulangi 3x [Jalan bawah]', 'Ulangi 3x [Jalan kiri]'],
+    hint: 'Dinding crate menutup barat. Masuk kolom 3 (lompat pagar (2,1)), susuri selatan lompat pagar (3,2), ke timur lalu lompat naik lewati pagar (4,2), ambil (4,1), lompat turun lagi, dan lompat pagar (2,4) untuk mencapai (1,4).',
+    par: 15, solution: ['Jalan kanan', 'Lompat kanan', 'Jalan bawah', 'Lompat bawah', 'Jalan bawah', 'Jalan kanan', 'Lompat atas x2', 'Jalan atas', 'Lompat bawah x3', 'Jalan kiri', 'Lompat kiri', 'Jalan kiri'],
     rabbit: { c: 1, r: 1, dir: 'right' },
     collectables: [
       { c: 4, r: 1, type: 'pumpkin' },
       { c: 4, r: 2, type: 'wheat' },
       { c: 4, r: 3, type: 'tomato' },
       { c: 4, r: 4, type: 'corn' },
-      { c: 1, r: 4, type: 'cabbage' }
+      { c: 1, r: 4, type: 'cabbage' },
+      { c: 3, r: 1, type: 'turnip' },
+      { c: 3, r: 2, type: 'corn' },
+      { c: 3, r: 3, type: 'wheat' },
+      { c: 3, r: 4, type: 'pumpkin' }
     ],
-    blocks: [], fences: []
+    blocks: [
+      { c: 1, r: 2, type: 'crate' },
+      { c: 2, r: 2, type: 'crate' },
+      { c: 1, r: 3, type: 'crate' },
+      { c: 2, r: 3, type: 'crate' }
+    ],
+    fences: [
+      { c: 2, r: 1, side: 'E', type: 'v' },
+      { c: 2, r: 4, side: 'E', type: 'v' },
+      { c: 3, r: 2, side: 'S', type: 'h' },
+      { c: 4, r: 2, side: 'S', type: 'h' }
+    ]
   },
   {
     id: 20, title: 'Master Absolut', mode: 'absolute', difficulty: 'Sulit',
