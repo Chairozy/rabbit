@@ -279,15 +279,15 @@ export const LEVELS = [
   },
   {
     id: 20, title: 'Master Absolut', mode: 'absolute', difficulty: 'Sulit',
-    hint: 'Crate (2,1),(3,3) + 4 pagar. Naik, Lompat kanan lewati pagar (1,3), naik, Lompat kanan lewati pagar (2,2), naik-kanan panen (4,1), turun 3x panen (4,4), kiri, Lompat kiri lewati pagar (2,4), kiri, naik 3x panen (1,1).',
-    par: 16, solution: ['Jalan atas', 'Lompat kanan', 'Jalan atas', 'Lompat kanan', 'Jalan atas', 'Jalan kanan', 'Jalan bawah x3', 'Jalan kiri', 'Lompat kiri', 'Jalan kiri', 'Jalan atas x3'],
+    hint: 'Crate (1,2) menutup kolom barat — (1,1) hanya bisa dimasuki dari timur. Rute: susuri atas panen (4,1), turun panen (4,4), kembali ke barat, naik kolom 2 lalu kiri ke (1,1) terakhir.',
+    par: 17, solution: ['Jalan atas', 'Lompat kanan', 'Jalan atas', 'Lompat kanan', 'Jalan atas', 'Jalan kanan', 'Jalan bawah x3', 'Jalan kiri', 'Lompat kiri', 'Jalan kiri', 'Jalan atas', 'Lompat kanan', 'Jalan atas x2', 'Jalan kiri'],
     rabbit: { c: 1, r: 4, dir: 'up' },
     collectables: [
       { c: 4, r: 1, type: 'pumpkin' },
       { c: 1, r: 1, type: 'cabbage' },
       { c: 4, r: 4, type: 'corn' }
     ],
-    blocks: [{ c: 2, r: 1, type: 'crate' }, { c: 3, r: 3, type: 'crate' }],
+    blocks: [{ c: 1, r: 2, type: 'crate' }, { c: 3, r: 3, type: 'crate' }],
     fences: [
       { c: 1, r: 3, side: 'E', type: 'v' },
       { c: 2, r: 4, side: 'E', type: 'v' },
