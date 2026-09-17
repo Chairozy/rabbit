@@ -422,15 +422,21 @@ export const LEVELS = [
   },
   {
     id: 31, title: 'Belok Beruntun', mode: 'relative', difficulty: 'Sedang',
-    hint: 'Mulai (2,2) menghadap timur. Maju, belok kanan, maju, belok kanan, maju — sapu 3 sayur ke tenggara.',
-    par: 5, solution: ['Maju', 'Belok kanan', 'Maju', 'Belok kanan', 'Maju'],
+    hint: 'Tiga sayur terkepung pagar — semua jalan tertutup. Lompat depan, belok kanan, Lompat depan, belok kanan, Lompat depan.',
+    par: 5, solution: ['Lompat depan', 'Belok kanan', 'Lompat depan', 'Belok kanan', 'Lompat depan'],
     rabbit: { c: 2, r: 2, dir: 'right' },
     collectables: [
       { c: 3, r: 2, type: 'pumpkin' },
       { c: 3, r: 3, type: 'tomato' },
       { c: 2, r: 3, type: 'corn' }
     ],
-    blocks: [], fences: []
+    blocks: [],
+    fences: [
+      { c: 2, r: 2, side: 'E', type: 'v' },
+      { c: 2, r: 3, side: 'E', type: 'v' },
+      { c: 2, r: 2, side: 'S', type: 'h' },
+      { c: 3, r: 2, side: 'S', type: 'h' }
+    ]
   },
   {
     id: 32, title: 'Mundur Panjang', mode: 'relative', difficulty: 'Sedang',
