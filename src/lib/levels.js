@@ -138,10 +138,13 @@ export const LEVELS = [
   },
   {
     id: 13, title: 'Pagar Vertikal', mode: 'absolute', difficulty: 'Sedang',
-    hint: 'Tiga pagar menurun di kolom 2. Ulangi 3x + Lompat bawah dari (2,1) ke (2,4).',
-    par: 2, solution: ['Ulangi 3x [Lompat bawah]'],
-    rabbit: { c: 2, r: 1, dir: 'down' },
-    collectables: [{ c: 2, r: 4, type: 'turnip' }],
+    hint: 'Mulai (3,2): kiri masuk kolom 2, Lompat atas ambil (2,1), lalu Lompat bawah 3x susuri pagar sampai (2,4).',
+    par: 5, solution: ['Jalan kiri', 'Lompat atas', 'Ulangi 3x [Lompat bawah]'],
+    rabbit: { c: 3, r: 2, dir: 'left' },
+    collectables: [
+      { c: 2, r: 1, type: 'pumpkin' },
+      { c: 2, r: 4, type: 'turnip' }
+    ],
     blocks: [],
     fences: [
       { c: 2, r: 1, side: 'S', type: 'h' },
