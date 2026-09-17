@@ -188,8 +188,8 @@ export const LEVELS = [
   },
   {
     id: 16, title: 'Kurung Balok U', mode: 'absolute', difficulty: 'Sulit',
-    hint: 'Labu di kantong (3,3) hanya bisa masuk dari barat. Masuk, keluar lagi, lalu turun ke (1,4). Balok: (3,2),(4,3),(3,4).',
-    par: 7, solution: ['Jalan bawah x2', 'Jalan kanan x2', 'Jalan kiri x2', 'Jalan bawah'],
+    hint: 'Start (1,1) dipagar selatan — Lompat bawah dulu. Balok (1,3) menutup barat, memutar lewat (2,2) masuk kantong (3,3), kembali lalu Lompat bawah lewati pagar (2,3) dan kiri ke (1,4).',
+    par: 7, solution: ['Lompat bawah', 'Jalan kanan', 'Jalan bawah', 'Jalan kanan', 'Jalan kiri', 'Lompat bawah', 'Jalan kiri'],
     rabbit: { c: 1, r: 1, dir: 'down' },
     collectables: [
       { c: 3, r: 3, type: 'pumpkin' },
@@ -198,9 +198,14 @@ export const LEVELS = [
     blocks: [
       { c: 3, r: 2, type: 'crate' },
       { c: 4, r: 3, type: 'crate' },
-      { c: 3, r: 4, type: 'rock' }
+      { c: 3, r: 4, type: 'rock' },
+      { c: 1, r: 3, type: 'rock' }
     ],
-    fences: []
+    fences: [
+      { c: 1, r: 1, side: 'S', type: 'h' },
+      { c: 2, r: 1, side: 'S', type: 'h' },
+      { c: 2, r: 3, side: 'S', type: 'h' }
+    ]
   },
   {
     id: 17, title: 'Ular Raksasa', mode: 'absolute', difficulty: 'Sulit',
