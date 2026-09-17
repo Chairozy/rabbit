@@ -405,14 +405,14 @@ export const LEVELS = [
   },
   {
     id: 30, title: 'Raja Kelinci', mode: 'relative', difficulty: 'Sulit',
-    hint: '4 sudut + dinding balok tengah (3,2),(3,3) + 2 pagar. Rute: utara ambil (1,1), lompat ke timur panen (4,1), turun panen (4,4), belok-lompat panen (1,4).',
-    par: 13, solution: ['Belok kiri', 'Maju', 'Belok kanan', 'Lompat depan', 'Maju x2', 'Belok kanan', 'Maju x3', 'Belok kanan', 'Maju', 'Lompat depan', 'Maju'],
+    hint: 'Rute: utara ambil (1,1), lompat ke timur panen (4,1), turun ambil (4,2), susuri selatan ke barat, lompat pagar (2,4), lalu naik kolom 2 panen (2,2).',
+    par: 16, solution: ['Belok kiri', 'Maju', 'Belok kanan', 'Lompat depan', 'Maju x2', 'Belok kanan', 'Maju x3', 'Belok kanan', 'Maju', 'Lompat depan', 'Belok kanan', 'Maju x2'],
     rabbit: { c: 1, r: 2, dir: 'right' },
     collectables: [
       { c: 1, r: 1, type: 'cabbage' },
       { c: 4, r: 1, type: 'pumpkin' },
-      { c: 4, r: 4, type: 'corn' },
-      { c: 1, r: 4, type: 'tomato' }
+      { c: 4, r: 2, type: 'corn' },
+      { c: 2, r: 2, type: 'tomato' }
     ],
     blocks: [{ c: 3, r: 2, type: 'crate' }, { c: 3, r: 3, type: 'crate' }],
     fences: [
