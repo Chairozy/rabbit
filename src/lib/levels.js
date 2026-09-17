@@ -81,11 +81,11 @@ export const LEVELS = [
   },
   {
     id: 9, title: 'Jalan Memutar + Lompat', mode: 'absolute', difficulty: 'Sedang',
-    hint: 'Balok (2,1),(3,1) tutup atas. Turun 2x, kanan, Lompat kanan lewati pagar (2,3), kanan, bawah ke (4,4).',
-    par: 6, solution: ['Jalan bawah x2', 'Jalan kanan', 'Lompat kanan', 'Jalan kanan', 'Jalan bawah'],
-    rabbit: { c: 1, r: 1, dir: 'down' },
-    collectables: [{ c: 4, r: 4, type: 'cabbage' }],
-    blocks: [{ c: 2, r: 1, type: 'rock' }, { c: 3, r: 1, type: 'rock' }],
+    hint: 'Dari (2,1) yang terkepung balok: kiri ke (1,1), turun 2x ke (1,3), kanan ke (2,3), Lompat kanan lewati pagar (2,3) ke (3,3). Balok (1,4) menutup jalan bawah.',
+    par: 5, solution: ['Jalan kiri', 'Jalan bawah x2', 'Jalan kanan', 'Lompat kanan'],
+    rabbit: { c: 2, r: 1, dir: 'down' },
+    collectables: [{ c: 3, r: 3, type: 'cabbage' }],
+    blocks: [{ c: 3, r: 1, type: 'rock' }, { c: 2, r: 2, type: 'rock' }, { c: 1, r: 4, type: 'rock' }],
     fences: [{ c: 2, r: 3, side: 'E', type: 'v' }]
   },
   {
