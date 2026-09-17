@@ -348,10 +348,13 @@ export const LEVELS = [
   },
   {
     id: 26, title: 'Koridor Pagar', mode: 'relative', difficulty: 'Sedang',
-    hint: 'Dua pagar beruntun ke timur. Ulangi 2x [Lompat depan] lalu Maju ke (4,3).',
-    par: 3, solution: ['Ulangi 2x [Lompat depan]', 'Maju'],
+    hint: 'Dua pagar beruntun ke timur. Lompat depan 2x sampai (3,3), lalu Belok kiri dan Maju ambil (3,2).',
+    par: 4, solution: ['Lompat depan x2', 'Belok kiri', 'Maju'],
     rabbit: { c: 1, r: 3, dir: 'right' },
-    collectables: [{ c: 4, r: 3, type: 'corn' }],
+    collectables: [
+      { c: 3, r: 2, type: 'tomato' },
+      { c: 3, r: 3, type: 'corn' }
+    ],
     blocks: [],
     fences: [
       { c: 1, r: 3, side: 'E', type: 'v' },
