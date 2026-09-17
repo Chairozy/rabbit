@@ -154,11 +154,15 @@ export const LEVELS = [
   },
   {
     id: 14, title: 'Pintu Pagar Ganda', mode: 'absolute', difficulty: 'Sedang',
-    hint: 'Pagar di (1,1) timur dan (2,2) selatan. Rute: Lompat kanan, bawah, Lompat bawah, bawah, kanan x2.',
-    par: 6, solution: ['Lompat kanan', 'Jalan bawah', 'Lompat bawah', 'Jalan bawah', 'Jalan kanan x2'],
+    hint: 'Pagar di timur (1,1) dan selatan (2,2), balok dan bunga menutup barat dan timur. Rute: Lompat kanan, bawah, Lompat bawah, bawah, kanan ke (3,4).',
+    par: 5, solution: ['Lompat kanan', 'Jalan bawah', 'Lompat bawah', 'Jalan bawah', 'Jalan kanan'],
     rabbit: { c: 1, r: 1, dir: 'right' },
-    collectables: [{ c: 4, r: 4, type: 'corn' }],
-    blocks: [],
+    collectables: [{ c: 3, r: 4, type: 'corn' }],
+    blocks: [
+      { c: 1, r: 2, type: 'crate' },
+      { c: 3, r: 1, type: 'red-flower' },
+      { c: 3, r: 2, type: 'white-flower' }
+    ],
     fences: [
       { c: 1, r: 1, side: 'E', type: 'v' },
       { c: 2, r: 2, side: 'S', type: 'h' }
