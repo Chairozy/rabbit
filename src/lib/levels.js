@@ -372,11 +372,17 @@ export const LEVELS = [
   },
   {
     id: 28, title: 'Zigzag Pagar Relatif', mode: 'relative', difficulty: 'Sulit',
-    hint: 'Belok kanan, maju 2x, belok kiri, maju, Lompat depan lewati pagar (2,3), maju, belok kanan, maju.',
-    par: 9, solution: ['Belok kanan', 'Maju x2', 'Belok kiri', 'Maju', 'Lompat depan', 'Maju', 'Belok kanan', 'Maju'],
+    hint: 'Balok menutup utara dan barat-selatan. Belok kanan, maju 2x, belok kiri, maju, Lompat depan lewati pagar (2,3) ke (3,3).',
+    par: 6, solution: ['Belok kanan', 'Maju x2', 'Belok kiri', 'Maju', 'Lompat depan'],
     rabbit: { c: 1, r: 1, dir: 'right' },
-    collectables: [{ c: 4, r: 4, type: 'cabbage' }],
-    blocks: [{ c: 2, r: 1, type: 'rock' }, { c: 3, r: 1, type: 'rock' }],
+    collectables: [{ c: 3, r: 3, type: 'cabbage' }],
+    blocks: [
+      { c: 2, r: 1, type: 'rock' },
+      { c: 3, r: 1, type: 'rock' },
+      { c: 1, r: 4, type: 'rock' },
+      { c: 2, r: 4, type: 'rock' },
+      { c: 3, r: 2, type: 'rock' }
+    ],
     fences: [{ c: 2, r: 3, side: 'E', type: 'v' }]
   },
   {
