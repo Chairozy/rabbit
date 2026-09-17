@@ -279,18 +279,18 @@ export const LEVELS = [
   },
   {
     id: 20, title: 'Master Absolut', mode: 'absolute', difficulty: 'Sulit',
-    hint: 'Tembok balok (2,2),(3,2) belah pulau. Naik-lompat ke timur, panen (4,1), susuri atas ke (1,1), kembali ke selatan, lalu lompat pagar (2,4) menuju (4,4).',
-    par: 15, solution: ['Jalan atas', 'Lompat kanan', 'Jalan kanan x2', 'Jalan atas x2', 'Jalan kiri x3', 'Jalan bawah x3', 'Jalan kanan', 'Lompat kanan', 'Jalan kanan'],
+    hint: 'Crate (2,1),(3,3) + pagar timur (2,1),(2,2). Naik-kanan-naik, Lompat kanan lewati pagar (2,2), naik-kanan panen (4,1), turun 3x panen (4,4), kiri 3x lalu naik 3x panen (1,1).',
+    par: 15, solution: ['Jalan atas', 'Jalan kanan', 'Jalan atas', 'Lompat kanan', 'Jalan atas', 'Jalan kanan', 'Jalan bawah x3', 'Jalan kiri x3', 'Jalan atas x3'],
     rabbit: { c: 1, r: 4, dir: 'up' },
     collectables: [
       { c: 4, r: 1, type: 'pumpkin' },
       { c: 1, r: 1, type: 'cabbage' },
       { c: 4, r: 4, type: 'corn' }
     ],
-    blocks: [{ c: 2, r: 2, type: 'crate' }, { c: 3, r: 2, type: 'crate' }],
+    blocks: [{ c: 2, r: 1, type: 'crate' }, { c: 3, r: 3, type: 'crate' }],
     fences: [
-      { c: 1, r: 3, side: 'E', type: 'v' },
-      { c: 2, r: 4, side: 'E', type: 'v' }
+      { c: 2, r: 1, side: 'E', type: 'v' },
+      { c: 2, r: 2, side: 'E', type: 'v' }
     ]
   },
   {
