@@ -22,21 +22,21 @@
 </script>
 
 <div id="game-stack">
-  <canvas bind:this={bg} id="layer-bg" width="384" height="448"></canvas>
-  <canvas bind:this={tiles} id="layer-tiles" width="384" height="448"></canvas>
-  <canvas bind:this={blocks} id="layer-blocks" width="384" height="448"></canvas>
-  <canvas bind:this={fences} id="layer-fences" width="384" height="448"></canvas>
-  <canvas bind:this={collectables} id="layer-collectables" width="384" height="448"></canvas>
-  <canvas bind:this={rabbit} id="layer-rabbit" width="384" height="448"></canvas>
-  <canvas bind:this={entities} id="layer-entities" width="384" height="448"></canvas>
-  <canvas bind:this={grid} id="layer-grid" width="384" height="448"></canvas>
+  <canvas bind:this={bg} id="layer-bg" width="384" height="384"></canvas>
+  <canvas bind:this={tiles} id="layer-tiles" width="384" height="384"></canvas>
+  <canvas bind:this={blocks} id="layer-blocks" width="384" height="384"></canvas>
+  <canvas bind:this={fences} id="layer-fences" width="384" height="384"></canvas>
+  <canvas bind:this={collectables} id="layer-collectables" width="384" height="384"></canvas>
+  <canvas bind:this={rabbit} id="layer-rabbit" width="384" height="384"></canvas>
+  <canvas bind:this={entities} id="layer-entities" width="384" height="384"></canvas>
+  <canvas bind:this={grid} id="layer-grid" width="384" height="384"></canvas>
 </div>
 
 <style>
   #game-stack {
     position: relative;
     width: 384px;
-    height: 448px;
+    height: 384px;
     border: 2px solid #33453a;
     border-radius: 8px;
     overflow: hidden;

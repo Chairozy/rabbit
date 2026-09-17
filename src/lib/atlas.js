@@ -41,4 +41,4 @@ export const ATLAS = {
   get(name) { return map[name] ?? null; }
 };
 
-export const GAME_CONST = { CELL: 64, GRID: 6, OX: 0, OY: 64, W: 384, H: 448 };
+export const GAME_CONST = { CELL: 64, GRID: 6, OX: 0, OY: 0, W: 384, H: 384 };
