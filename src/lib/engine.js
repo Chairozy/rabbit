@@ -52,6 +52,9 @@ export class Engine {
       blocks: [],
       blockSet: new Set(),
       fenceList: [],
+      pushables: [],
+      pushSet: new Set(),
+      targets: [],
       collectedCount: 0,
       total: 0,
       speed: 1
@@ -69,8 +72,11 @@ export class Engine {
   }
 
   setInfo() {
+    const progress = this.state.targets.length
+      ? `Target ${this.state.collectedCount}/${this.state.targets.length}`
+      : `Terkumpul ${this.state.collectedCount}/${this.state.total}`;
     this.hooks.onInfo?.(
-      `Kelinci (${this.state.rabbit.c},${this.state.rabbit.r}) • Terkumpul ${this.state.collectedCount}/${this.state.total}`
+      `Kelinci (${this.state.rabbit.c},${this.state.rabbit.r}) • ${progress}`
     );
   }
 
@@ -140,7 +146,7 @@ export class Engine {
     this.clear('rabbit');
   }
 
-  buildEntities(rabbitOverride) {
+  buildEntities(rabbitOverride, pushableOverride) {
     const list = [];
     for (const b of this.state.blocks) {
       const p = cellToPx(b.c, b.r);
@@ -165,6 +171,15 @@ export class Engine {
         alpha: it.fade !== undefined ? it.fade : 1
       });
     }
+    for (const t of this.state.targets) {
+      const p = cellToPx(t.c, t.r);
+      list.push({ depth: p.y + CELL, order: -1, name: t.type, x: p.x, y: p.y, w: CELL, h: CELL, alpha: 0.35 });
+    }
+    for (const pb of this.state.pushables) {
+      const p = cellToPx(pb.c, pb.r);
+      const o = pushableOverride?.get(pb);
+      list.push({ depth: p.y + CELL, order: 0, name: pb.type, x: o ? o.x : p.x, y: o ? o.y : p.y });
+    }
     let r = rabbitOverride;
     if (!r) {
       const p = cellToPx(this.state.rabbit.c, this.state.rabbit.r);
@@ -184,11 +199,11 @@ export class Engine {
     return list;
   }
 
-  drawEntities(rabbitOverride) {
+  drawEntities(rabbitOverride, pushableOverride) {
     const ctx = this.ctxs.entities;
     this.clear('entities');
     this.clearLegacyEntityLayers();
-    for (const e of this.buildEntities(rabbitOverride)) {
+    for (const e of this.buildEntities(rabbitOverride, pushableOverride)) {
       if (e.rot) {
         const s = ATLAS.get(e.name);
         if (!s) continue;
@@ -264,8 +279,15 @@ export class Engine {
     this.state.blocks = lv.blocks || [];
     this.state.fenceList = lv.fences || [];
     this.state.blockSet = new Set(this.state.blocks.map((b) => key(b.c, b.r)));
+    this.state.pushables = (lv.pushables || []).map((o) => ({ c: o.c, r: o.r, type: o.type }));
+    this.state.pushSet = new Set(this.state.pushables.map((b) => key(b.c, b.r)));
+    this.state.targets = (lv.targets || []).map((o) => ({ c: o.c, r: o.r, type: o.type }));
     this.state.collectedCount = 0;
     this.state.total = this.state.collectables.length;
+    if (this.state.targets.length) {
+      this.state.total = this.state.targets.length;
+      this.state.collectedCount = this.sokobanFilled();
+    }
     if (this.img.complete) this.drawAll();
     this.setInfo();
   }
@@ -306,6 +328,66 @@ export class Engine {
     return insideIsland(c1, r1) !== insideIsland(c2, r2);
   }
 
+  hasPushable(c, r) {
+    return this.state.pushSet.has(key(c, r));
+  }
+  pushableAt(c, r) {
+    return this.state.pushables.find((p) => p.c === c && p.r === r) ?? null;
+  }
+  // Dorong rantai pushable bertumpuk ke arah dir; tiap sambungan (termasuk pagar) harus bebas.
+  tryPush(c, r, dir) {
+    const d = DIRS[dir];
+    const chain = [];
+    let cc = c + d.dc, rr = r + d.dr;
+    while (this.hasPushable(cc, rr)) {
+      if (this.hasFenceBetween(cc - d.dc, rr - d.dr, cc, rr)) return { ok: false, reason: 'fence' };
+      chain.push({ c: cc, r: rr });
+      cc += d.dc;
+      rr += d.dr;
+      if (chain.length > GRID * GRID) return { ok: false, reason: 'block' };
+    }
+    if (!chain.length) return { ok: false, reason: 'block' };
+    const last = chain[chain.length - 1];
+    if (!this.inBounds(cc, rr)) return { ok: false, reason: 'out' };
+    if (this.hasFenceBetween(last.c, last.r, cc, rr)) return { ok: false, reason: 'fence' };
+    if (this.hasWallBetween(last.c, last.r, cc, rr)) return { ok: false, reason: 'wall' };
+    if (this.hasBlock(cc, rr)) return { ok: false, reason: 'block' };
+    return { ok: true, chain };
+  }
+  applyPush(chain, dir) {
+    const d = DIRS[dir];
+    for (let i = chain.length - 1; i >= 0; i--) {
+      const pb = this.pushableAt(chain[i].c, chain[i].r);
+      this.state.pushSet.delete(key(pb.c, pb.r));
+      pb.c += d.dc;
+      pb.r += d.dr;
+      this.state.pushSet.add(key(pb.c, pb.r));
+    }
+  }
+  sokobanFilled() {
+    let n = 0;
+    for (const t of this.state.targets) {
+      const pb = this.pushableAt(t.c, t.r);
+      if (pb && pb.type === t.type) n++;
+    }
+    return n;
+  }
+  checkSokobanWin() {
+    if (!this.state.targets.length) return null;
+    this.state.collectedCount = this.sokobanFilled();
+    this.setInfo();
+    if (this.state.collectedCount >= this.state.targets.length) {
+      this.setStatus('Berhasil! Semua target terisi 🎉');
+      return 'win';
+    }
+    return null;
+  }
+  async afterStep() {
+    const res = await this.checkPickup();
+    if (res === 'win') return res;
+    return this.checkSokobanWin();
+  }
+
   canWalk(c, r, dir) {
     const d = DIRS[dir];
     const nc = c + d.dc, nr = r + d.dr;
@@ -320,6 +402,7 @@ export class Engine {
     const nc = c + d.dc, nr = r + d.dr;
     if (!this.inBounds(nc, nr)) return { ok: false, reason: 'out' };
     if (this.hasBlock(nc, nr)) return { ok: false, reason: 'block' };
+    if (this.hasPushable(nc, nr)) return { ok: false, reason: 'block' };
     if (this.hasWallBetween(c, r, nc, nr)) return { ok: false, reason: 'wall' };
     return { ok: true, nc, nr };
   }
@@ -344,6 +427,38 @@ export class Engine {
         const y = from.y + (to.y - from.y) * k;
         const fi = Math.min(frames.length - 1, Math.floor(k * frames.length));
         this.drawEntities({ gx: x, gy: y, arc: 0, sprite: frames[fi] });
+        if (k < 1) requestAnimationFrame(frame);
+        else resolve();
+      };
+      requestAnimationFrame(frame);
+    });
+  }
+
+  animatePush(dir, faceDir, moves) {
+    const from = cellToPx(this.state.rabbit.c, this.state.rabbit.r);
+    const d = DIRS[dir];
+    const to = cellToPx(this.state.rabbit.c + d.dc, this.state.rabbit.r + d.dr);
+    const face = faceDir || dir;
+    const frames = [
+      rabbitSprite(face, 'walk-1'),
+      rabbitSprite(face, 'idle'),
+      rabbitSprite(face, 'walk-2'),
+      rabbitSprite(face, 'idle')
+    ];
+    const total = this.dur(580);
+    const t0 = performance.now();
+    return new Promise((resolve) => {
+      const frame = (t) => {
+        const k = Math.max(0, Math.min(1, (t - t0) / total));
+        const x = from.x + (to.x - from.x) * k;
+        const y = from.y + (to.y - from.y) * k;
+        const fi = Math.min(frames.length - 1, Math.floor(k * frames.length));
+        const crates = new Map();
+        for (const m of moves) {
+          const dst = cellToPx(m.pb.c, m.pb.r);
+          crates.set(m.pb, { x: m.fx + (dst.x - m.fx) * k, y: m.fy + (dst.y - m.fy) * k });
+        }
+        this.drawEntities({ gx: x, gy: y, arc: 0, sprite: frames[fi] }, crates);
         if (k < 1) requestAnimationFrame(frame);
         else resolve();
       };
@@ -451,13 +566,26 @@ export class Engine {
       await this.animateBump(dir);
       return { bumped: true, reason: chk.reason };
     }
-    await this.animateWalk(dir);
+    let moves = null;
+    if (this.hasPushable(chk.nc, chk.nr)) {
+      const push = this.tryPush(this.state.rabbit.c, this.state.rabbit.r, dir);
+      if (!push.ok) {
+        await this.animateBump(dir);
+        return { bumped: true, reason: push.reason };
+      }
+      moves = push.chain.map((p) => {
+        const f = cellToPx(p.c, p.r);
+        return { pb: this.pushableAt(p.c, p.r), fx: f.x, fy: f.y };
+      });
+      this.applyPush(push.chain, dir);
+    }
+    if (moves) await this.animatePush(dir, undefined, moves);
+    else await this.animateWalk(dir);
     this.state.rabbit.c = chk.nc;
     this.state.rabbit.r = chk.nr;
     this.drawRabbitIdle();
     this.setInfo();
-    const res = await this.checkPickup();
-    return { bumped: false, pickup: res };
+    return { bumped: false, pickup: await this.afterStep() };
   }
 
   async stepJump(dir) {
@@ -472,8 +600,7 @@ export class Engine {
     this.state.rabbit.r = chk.nr;
     this.drawRabbitIdle();
     this.setInfo();
-    const res = await this.checkPickup();
-    return { bumped: false, pickup: res };
+    return { bumped: false, pickup: await this.afterStep() };
   }
 
   async stepJumpForward() {
@@ -488,13 +615,72 @@ export class Engine {
       await this.animateBump(dir);
       return { bumped: true, reason: chk.reason };
     }
-    await this.animateWalk(dir, face);
+    let moves = null;
+    if (this.hasPushable(chk.nc, chk.nr)) {
+      const push = this.tryPush(this.state.rabbit.c, this.state.rabbit.r, dir);
+      if (!push.ok) {
+        await this.animateBump(dir);
+        return { bumped: true, reason: push.reason };
+      }
+      moves = push.chain.map((p) => {
+        const f = cellToPx(p.c, p.r);
+        return { pb: this.pushableAt(p.c, p.r), fx: f.x, fy: f.y };
+      });
+      this.applyPush(push.chain, dir);
+    }
+    if (moves) await this.animatePush(dir, face, moves);
+    else await this.animateWalk(dir, face);
     this.state.rabbit.c = chk.nc;
     this.state.rabbit.r = chk.nr;
     this.drawRabbitIdle();
     this.setInfo();
-    const res = await this.checkPickup();
-    return { bumped: false, pickup: res };
+    return { bumped: false, pickup: await this.afterStep() };
+  }
+
+  async stepWalkToX(x) {
+    const target = Math.max(0, Math.min(GRID - 1, parseInt(x, 10) || 0));
+    let guard = 0;
+    while (this.state.rabbit.c !== target) {
+      if (++guard > GRID * 2) break;
+      const dir = target > this.state.rabbit.c ? 'right' : 'left';
+      this.state.rabbit.dir = dir;
+      const chk = this.canWalk(this.state.rabbit.c, this.state.rabbit.r, dir);
+      if (!chk.ok || this.hasPushable(chk.nc, chk.nr)) {
+        await this.animateBump(dir);
+        return { bumped: true, reason: chk.ok ? 'block' : chk.reason };
+      }
+      await this.animateWalk(dir);
+      this.state.rabbit.c = chk.nc;
+      this.state.rabbit.r = chk.nr;
+      this.drawRabbitIdle();
+      this.setInfo();
+      const res = await this.afterStep();
+      if (res === 'win') return { bumped: false, pickup: 'win' };
+    }
+    return { bumped: false, pickup: null };
+  }
+
+  async stepWalkToY(y) {
+    const target = Math.max(0, Math.min(GRID - 1, parseInt(y, 10) || 0));
+    let guard = 0;
+    while (this.state.rabbit.r !== target) {
+      if (++guard > GRID * 2) break;
+      const dir = target > this.state.rabbit.r ? 'down' : 'up';
+      this.state.rabbit.dir = dir;
+      const chk = this.canWalk(this.state.rabbit.c, this.state.rabbit.r, dir);
+      if (!chk.ok || this.hasPushable(chk.nc, chk.nr)) {
+        await this.animateBump(dir);
+        return { bumped: true, reason: chk.ok ? 'block' : chk.reason };
+      }
+      await this.animateWalk(dir);
+      this.state.rabbit.c = chk.nc;
+      this.state.rabbit.r = chk.nr;
+      this.drawRabbitIdle();
+      this.setInfo();
+      const res = await this.afterStep();
+      if (res === 'win') return { bumped: false, pickup: 'win' };
+    }
+    return { bumped: false, pickup: null };
   }
 
   async stepTurn(rel) {

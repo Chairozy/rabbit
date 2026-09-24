@@ -1,4 +1,5 @@
 <script>
+  import confetti from 'canvas-confetti';
   import BlocklyWorkspace from './components/BlocklyWorkspace.svelte';
   import GameCanvas from './components/GameCanvas.svelte';
   import { buildProgram, flattenProgram, getStartBlocks, toolboxFor, ensureStartBlock } from './lib/blockly.js';
@@ -20,7 +21,13 @@
   let currentLevel = $derived(LEVELS.find((l) => l.id === levelId) ?? LEVELS[0]);
   let toolbox = $derived(toolboxFor(currentLevel.mode));
   let modeLabel = $derived(
-    currentLevel.mode === 'relative' ? 'Setup B • Relatif' : 'Setup A • Mutlak'
+    currentLevel.mode === 'relative'
+      ? 'Setup B • Relatif'
+      : currentLevel.mode === 'sokoban'
+        ? 'Setup C • Sokoban'
+        : currentLevel.mode === 'coordinate'
+          ? 'Setup D • Koordinat'
+          : 'Setup A • Mutlak'
   );
   let progress = $derived(`${doneIds.length}/${LEVELS.length}`);
   let isLast = $derived(levelId >= LEVELS.length);
@@ -83,13 +90,20 @@
     status = 'Dihentikan.';
   }
 
+  function celebrate() {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    confetti({ particleCount: 90, spread: 75, origin: { y: 0.6 } });
+    setTimeout(() => confetti({ particleCount: 50, angle: 60, spread: 60, origin: { x: 0 } }), 200);
+    setTimeout(() => confetti({ particleCount: 50, angle: 120, spread: 60, origin: { x: 1 } }), 350);
+  }
+
   async function handleRun() {
     if (running || !workspace || !engine) return;
     cancelled = false;
     running = true;
     engine.reset(currentLevel);
     if (!getStartBlocks(workspace).length) {
-      status = 'Tambahkan blok Mulai — kode di luar Mulai tidak dijalankan.';
+      status = 'Tambahkan blok bendera hijau — kode di luar blok itu tidak dijalankan.';
       running = false;
       return;
     }
@@ -102,7 +116,7 @@
       return;
     }
     if (!prog.length) {
-      status = 'Tempelkan blok di bawah Mulai dulu — kode di luar Mulai tidak dijalankan.';
+      status = 'Tempelkan blok di bawah bendera hijau dulu — kode di luar blok itu tidak dijalankan.';
       running = false;
       return;
     }
@@ -121,7 +135,11 @@
               ? await engine.stepJumpForward()
               : st.op === 'move'
                 ? await engine.stepMove(st.dir)
-                : await engine.stepTurn(st.dir);
+                : st.op === 'walkToX'
+                  ? await engine.stepWalkToX(st.x)
+                  : st.op === 'walkToY'
+                    ? await engine.stepWalkToY(st.y)
+                    : await engine.stepTurn(st.dir);
       if (res?.bumped) {
         const why = res.reason === 'block' ? 'balok' : res.reason === 'fence' ? 'pagar' : 'tembok';
         status = `Menabrak ${why}! Kode berhenti, kelinci kembali ke cell.`;
@@ -129,6 +147,7 @@
       }
       if (res?.pickup === 'win') {
         markDone(currentLevel.id);
+        celebrate();
         break;
       }
       if (cancelled) break;
@@ -167,19 +186,25 @@
     <BlocklyWorkspace toolbox={toolbox} onReady={(ws) => (workspace = ws)} />
     <p class="text-xs opacity-60 mt-1">
       {#if currentLevel.mode === 'relative'}
-        Setup B: Maju/Mundur/Belok/Lompat depan (relatif arah hadap) + Ulangi 2-9. Susun di bawah blok Mulai.
+        Setup B: Maju/Mundur/Belok/Lompat depan (relatif arah hadap) + Ulangi 2-9. Susun di bawah blok bendera hijau.
+      {:else if currentLevel.mode === 'sokoban'}
+        Setup C: Dorong crate/haybale ke bayangannya (bisa bertumpuk, tak bisa menembus pagar). Susun di bawah blok bendera hijau.
+      {:else if currentLevel.mode === 'coordinate'}
+        Setup D: Jalan lurus ke x/y + Lompat arah + Ulangi. Susun di bawah blok bendera hijau.
       {:else}
-        Setup A: Jalan/Lompat atas-bawah-kiri-kanan (arah mutlak) + Ulangi 2-9. Susun di bawah blok Mulai.
+        Setup A: Jalan/Lompat atas-bawah-kiri-kanan (arah mutlak) + Ulangi 2-9. Susun di bawah blok bendera hijau.
       {/if}
     </p>
   </section>
 
   <section class="flex flex-col items-center gap-2 w-[430px] shrink-0 overflow-y-auto">
     <div class="flex gap-2 items-center flex-wrap justify-center">
-      <button class="btn btn-primary btn-sm" onclick={handleRun} disabled={running || !workspace || !engine}>
-        ▶ Jalankan
+      <button class="btn btn-sm" onclick={handleRun} disabled={running || !workspace || !engine} title="Jalankan">
+        <img src="media/green-flag.svg" alt="Jalankan" class="w-6 h-6" />
       </button>
-      <button class="btn btn-sm" onclick={handleStop}>⏹ Berhenti</button>
+      <button class="btn btn-sm" onclick={handleStop} title="Berhenti">
+        <svg viewBox="0 0 24 24" class="w-6 h-6" role="img" aria-label="Berhenti"><polygon points="8,3 16,3 21,8 21,16 16,21 8,21 3,16 3,8" fill="#FF0000" /></svg>
+      </button>
       <button class="btn btn-sm btn-outline" onclick={handleReset}>↺ Reset</button>
       <div class="join">
         <button class="join-item btn btn-sm" class:btn-active={speed === 1} onclick={() => setSpeed(1)}>x1</button>
@@ -210,31 +235,18 @@
         <p class="text-sm">💡 {currentLevel.hint}</p>
         <p class="text-xs opacity-70">Target (par): {currentLevel.par} blok/langkah inti • Hadap awal: {currentLevel.rabbit.dir}</p>
         {#if !isLast}
-          <button class="btn btn-sm btn-success mt-1" onclick={() => selectLevel(levelId + 1)} disabled={running}>
-            Level berikutnya →
-          </button>
+          {#if doneIds.includes(levelId)}
+            <button class="btn btn-sm btn-success mt-1" onclick={() => selectLevel(levelId + 1)} disabled={running}>
+              Level berikutnya →
+            </button>
+          {:else}
+            <p class="text-xs opacity-60 mt-1">🔒 Selesaikan level ini untuk membuka level berikutnya.</p>
+          {/if}
         {:else}
-          <p class="text-xs font-bold mt-1">🎉 Level terakhir — tamatkan semua 40 level!</p>
+          <p class="text-xs font-bold mt-1">🎉 Level terakhir — tamatkan semua {LEVELS.length} level!</p>
         {/if}
       </div>
     </div>
 
-    <div class="collapse collapse-arrow bg-base-200 w-[384px]">
-      <input type="checkbox" />
-      <div class="collapse-title text-sm font-medium">Legenda layer &amp; aturan</div>
-      <div class="collapse-content text-sm">
-        <ul class="list-disc ml-4 space-y-1">
-          <li><b>tiles</b>: island 4x4 (cell 1..4) pola catur dark/light.</li>
-          <li><b>blocks</b>: menempati 1 cell, collision rectangle (walk &amp; jump terhalang).</li>
-          <li><b>fences</b>: di tepi cell, collision garis (walk terhalang, jump lewat).</li>
-          <li><b>dinding</b>: garis tak terlihat di border island 4x4 — walk &amp; jump tidak bisa keluar.</li>
-          <li><b>collectables</b>: auto-pickup saat 1 cell, item meloncat tinggi + fade out (kelinci diam).</li>
-          <li><b>rabbit</b>: walk = gerak + animasi jalan, jump = parabola + sprite walk-1.</li>
-          <li><b>render</b>: semua sprite diurut berdasarkan <b>Y kaki</b> ke <b>layer-entities</b>.</li>
-          <li><b>Setup A (1-20)</b>: blok mutlak — jalan/lompat atas, bawah, kiri, kanan + ulangi.</li>
-          <li><b>Setup B (21-40)</b>: blok relatif — maju, mundur, belok kiri/kanan, lompat depan + ulangi.</li>
-        </ul>
-      </div>
-    </div>
   </section>
 </main>

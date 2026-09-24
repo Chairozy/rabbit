@@ -9,7 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "blockly": "^13.3.0",
+    "canvas-confetti": "^1.9.4",
+    "scratch-blocks": "^2.1.19",
     "svelte": "^5.57.0"
   },
   "devDependencies": {

@@ -1,4 +1,4 @@
-export const MODES = { ABSOLUTE: 'absolute', RELATIVE: 'relative' };
+export const MODES = { ABSOLUTE: 'absolute', RELATIVE: 'relative', SOKOBAN: 'sokoban', COORDINATE: 'coordinate' };
 
 export const LEVELS = [
   {
@@ -575,6 +575,454 @@ export const LEVELS = [
       { c: 1, r: 3, side: 'E', type: 'v' },
       { c: 2, r: 4, side: 'E', type: 'v' }
     ]
+  },
+  {
+    id: 41, title: 'Langkah X', mode: 'coordinate', difficulty: 'Mudah',
+    hint: 'Kelinci di (1,2). Tomat di (4,2). Pakai 1x Jalan lurus ke x 4.',
+    par: 1, solution: ['Jalan lurus ke x 4'],
+    rabbit: { c: 1, r: 2, dir: 'right' },
+    collectables: [{ c: 4, r: 2, type: 'tomato' }],
+    blocks: [], fences: []
+  },
+  {
+    id: 42, title: 'Langkah Y', mode: 'coordinate', difficulty: 'Mudah',
+    hint: 'Kelinci di (3,1). Jagung di (3,4). Pakai 1x Jalan lurus ke y 4.',
+    par: 1, solution: ['Jalan lurus ke y 4'],
+    rabbit: { c: 3, r: 1, dir: 'down' },
+    collectables: [{ c: 3, r: 4, type: 'corn' }],
+    blocks: [], fences: []
+  },
+  {
+    id: 43, title: 'Belok Koordinat', mode: 'coordinate', difficulty: 'Mudah',
+    hint: 'Labu di (3,2). Capai x=3 dulu lalu y=2.',
+    par: 2, solution: ['Jalan lurus ke x 3', 'Jalan lurus ke y 2'],
+    rabbit: { c: 1, r: 4, dir: 'right' },
+    collectables: [{ c: 3, r: 2, type: 'pumpkin' }],
+    blocks: [], fences: []
+  },
+  {
+    id: 44, title: 'Putar Haluan', mode: 'coordinate', difficulty: 'Mudah',
+    hint: 'Gandum di (2,3). Capai y=3 dulu lalu x=2.',
+    par: 2, solution: ['Jalan lurus ke y 3', 'Jalan lurus ke x 2'],
+    rabbit: { c: 4, r: 1, dir: 'down' },
+    collectables: [{ c: 2, r: 3, type: 'wheat' }],
+    blocks: [], fences: []
+  },
+  {
+    id: 45, title: 'Lompat Pagar', mode: 'coordinate', difficulty: 'Mudah',
+    hint: 'Pagar menghalangi jalan. Pakai 1x Lompat kanan.',
+    par: 1, solution: ['Lompat kanan'],
+    rabbit: { c: 1, r: 2, dir: 'right' },
+    collectables: [{ c: 2, r: 2, type: 'corn' }],
+    blocks: [],
+    fences: [{ c: 1, r: 2, side: 'E', type: 'v' }]
+  },
+  {
+    id: 46, title: 'Lompat Beruntun', mode: 'coordinate', difficulty: 'Mudah',
+    hint: 'Dua pagar beruntun. Pakai 2x Lompat bawah.',
+    par: 2, solution: ['Lompat bawah', 'Lompat bawah'],
+    rabbit: { c: 3, r: 1, dir: 'down' },
+    collectables: [
+      { c: 3, r: 2, type: 'wheat' },
+      { c: 3, r: 3, type: 'corn' }
+    ],
+    blocks: [],
+    fences: [{ c: 3, r: 1, side: 'S', type: 'h' }, { c: 3, r: 2, side: 'S', type: 'h' }]
+  },
+  {
+    id: 47, title: 'Lompat Siku', mode: 'coordinate', difficulty: 'Sedang',
+    hint: 'Belok dengan lompatan: kanan lalu bawah. Pagar memaksa melompat.',
+    par: 2, solution: ['Lompat kanan', 'Lompat bawah'],
+    rabbit: { c: 1, r: 1, dir: 'right' },
+    collectables: [
+      { c: 2, r: 1, type: 'pumpkin' },
+      { c: 2, r: 2, type: 'tomato' }
+    ],
+    blocks: [],
+    fences: [{ c: 1, r: 1, side: 'E', type: 'v' }]
+  },
+  {
+    id: 48, title: 'Lompat Tangga', mode: 'coordinate', difficulty: 'Sedang',
+    hint: 'Tangga lompat: kanan, bawah, kanan.',
+    par: 3, solution: ['Lompat kanan', 'Lompat bawah', 'Lompat kanan'],
+    rabbit: { c: 1, r: 1, dir: 'right' },
+    collectables: [
+      { c: 2, r: 1, type: 'pumpkin' },
+      { c: 2, r: 2, type: 'tomato' },
+      { c: 3, r: 2, type: 'corn' }
+    ],
+    blocks: [],
+    fences: [{ c: 1, r: 1, side: 'E', type: 'v' }]
+  },
+  {
+    id: 49, title: 'Ulangi Lompat', mode: 'coordinate', difficulty: 'Sedang',
+    hint: 'Tiga sayur di balik pagar. Ulangi 3x + Lompat kanan.',
+    par: 2, solution: ['Ulangi 3x [Lompat kanan]'],
+    rabbit: { c: 1, r: 3, dir: 'right' },
+    collectables: [
+      { c: 2, r: 3, type: 'pumpkin' },
+      { c: 3, r: 3, type: 'tomato' },
+      { c: 4, r: 3, type: 'corn' }
+    ],
+    blocks: [],
+    fences: [{ c: 1, r: 3, side: 'E', type: 'v' }, { c: 2, r: 3, side: 'E', type: 'v' }]
+  },
+  {
+    id: 50, title: 'Ulangi Turun', mode: 'coordinate', difficulty: 'Sedang',
+    hint: 'Tiga sayur di balik pagar. Ulangi 3x + Lompat bawah.',
+    par: 2, solution: ['Ulangi 3x [Lompat bawah]'],
+    rabbit: { c: 2, r: 1, dir: 'down' },
+    collectables: [
+      { c: 2, r: 2, type: 'tomato' },
+      { c: 2, r: 3, type: 'corn' },
+      { c: 2, r: 4, type: 'wheat' }
+    ],
+    blocks: [],
+    fences: [{ c: 2, r: 1, side: 'S', type: 'h' }, { c: 2, r: 2, side: 'S', type: 'h' }]
+  },
+  {
+    id: 51, title: 'Ulangi Siku', mode: 'coordinate', difficulty: 'Sedang',
+    hint: 'Empat sayur siku. Ulangi 2x + [Lompat kanan, Lompat bawah].',
+    par: 3, solution: ['Ulangi 2x [Lompat kanan, Lompat bawah]'],
+    rabbit: { c: 1, r: 1, dir: 'right' },
+    collectables: [
+      { c: 2, r: 1, type: 'pumpkin' },
+      { c: 2, r: 2, type: 'tomato' },
+      { c: 3, r: 2, type: 'corn' },
+      { c: 3, r: 3, type: 'wheat' }
+    ],
+    blocks: [], fences: []
+  },
+  {
+    id: 52, title: 'Ulangi Ular', mode: 'coordinate', difficulty: 'Sedang',
+    hint: 'Enam sayur ular ke tenggara. Ulangi 3x + [Lompat kanan, Lompat bawah].',
+    par: 3, solution: ['Ulangi 3x [Lompat kanan, Lompat bawah]'],
+    rabbit: { c: 1, r: 1, dir: 'right' },
+    collectables: [
+      { c: 2, r: 1, type: 'pumpkin' },
+      { c: 2, r: 2, type: 'tomato' },
+      { c: 3, r: 2, type: 'corn' },
+      { c: 3, r: 3, type: 'wheat' },
+      { c: 4, r: 3, type: 'cabbage' },
+      { c: 4, r: 4, type: 'turnip' }
+    ],
+    blocks: [], fences: []
+  },
+  {
+    id: 53, title: 'Memutar Balok', mode: 'coordinate', difficulty: 'Sedang',
+    hint: 'Balok menutup jalan lurus. Memutar: y=1, x=4, y=2.',
+    par: 3, solution: ['Jalan lurus ke y 1', 'Jalan lurus ke x 4', 'Jalan lurus ke y 2'],
+    rabbit: { c: 1, r: 2, dir: 'right' },
+    collectables: [{ c: 4, r: 2, type: 'corn' }],
+    blocks: [{ c: 2, r: 2, type: 'rock' }],
+    fences: []
+  },
+  {
+    id: 54, title: 'Blok Ganda', mode: 'coordinate', difficulty: 'Sedang',
+    hint: 'Dua balok menutup jalan langsung. Memutar lewat kolom 2.',
+    par: 3, solution: ['Jalan lurus ke x 2', 'Jalan lurus ke y 4', 'Jalan lurus ke x 4'],
+    rabbit: { c: 1, r: 1, dir: 'right' },
+    collectables: [{ c: 4, r: 4, type: 'wheat' }],
+    blocks: [{ c: 3, r: 1, type: 'rock' }, { c: 1, r: 3, type: 'rock' }],
+    fences: []
+  },
+  {
+    id: 55, title: 'Pagar Ganda', mode: 'coordinate', difficulty: 'Sulit',
+    hint: 'Dua pagar menutup jalan pintas. Memutar: y=2, x=4, y=4.',
+    par: 3, solution: ['Jalan lurus ke y 2', 'Jalan lurus ke x 4', 'Jalan lurus ke y 4'],
+    rabbit: { c: 1, r: 1, dir: 'right' },
+    collectables: [{ c: 4, r: 4, type: 'tomato' }],
+    blocks: [],
+    fences: [{ c: 2, r: 1, side: 'E', type: 'v' }, { c: 1, r: 2, side: 'S', type: 'h' }]
+  },
+  {
+    id: 56, title: 'Keliling Tepi', mode: 'coordinate', difficulty: 'Sulit',
+    hint: 'Kelilingi tepi pulau: x=4, y=4, x=1.',
+    par: 3, solution: ['Jalan lurus ke x 4', 'Jalan lurus ke y 4', 'Jalan lurus ke x 1'],
+    rabbit: { c: 1, r: 1, dir: 'right' },
+    collectables: [
+      { c: 4, r: 1, type: 'pumpkin' },
+      { c: 4, r: 4, type: 'tomato' },
+      { c: 1, r: 4, type: 'corn' }
+    ],
+    blocks: [], fences: []
+  },
+  {
+    id: 57, title: 'Terobosan Pagar', mode: 'coordinate', difficulty: 'Sulit',
+    hint: 'Terobos pagar ganda dengan lompatan, selesaikan dengan jalan lurus.',
+    par: 3, solution: ['Lompat kanan', 'Lompat kanan', 'Jalan lurus ke x 4'],
+    rabbit: { c: 1, r: 2, dir: 'right' },
+    collectables: [{ c: 4, r: 2, type: 'corn' }],
+    blocks: [],
+    fences: [{ c: 1, r: 2, side: 'E', type: 'v' }, { c: 2, r: 2, side: 'E', type: 'v' }]
+  },
+  {
+    id: 58, title: 'Ular Tangga', mode: 'coordinate', difficulty: 'Sulit',
+    hint: 'Ular menanjak ke timur-laut. Ulangi 3x + [Lompat atas, Lompat kanan].',
+    par: 3, solution: ['Ulangi 3x [Lompat atas, Lompat kanan]'],
+    rabbit: { c: 1, r: 4, dir: 'up' },
+    collectables: [
+      { c: 1, r: 3, type: 'pumpkin' },
+      { c: 2, r: 3, type: 'tomato' },
+      { c: 2, r: 2, type: 'corn' },
+      { c: 3, r: 2, type: 'wheat' },
+      { c: 3, r: 1, type: 'cabbage' },
+      { c: 4, r: 1, type: 'turnip' }
+    ],
+    blocks: [], fences: []
+  },
+  {
+    id: 59, title: 'Campuran', mode: 'coordinate', difficulty: 'Sulit',
+    hint: 'Campuran: jalan, lompat pagar, jalan, jalan.',
+    par: 4, solution: ['Jalan lurus ke x 2', 'Lompat kanan', 'Jalan lurus ke x 4', 'Jalan lurus ke y 1'],
+    rabbit: { c: 1, r: 3, dir: 'right' },
+    collectables: [{ c: 4, r: 1, type: 'wheat' }],
+    blocks: [],
+    fences: [{ c: 2, r: 3, side: 'E', type: 'v' }]
+  },
+  {
+    id: 60, title: 'Mahakarya', mode: 'coordinate', difficulty: 'Sulit',
+    hint: 'Mahakarya: x=4, y=4, lompat kiri 2x (lewati pagar!), x=1.',
+    par: 5, solution: ['Jalan lurus ke x 4', 'Jalan lurus ke y 4', 'Lompat kiri', 'Lompat kiri', 'Jalan lurus ke x 1'],
+    rabbit: { c: 1, r: 1, dir: 'right' },
+    collectables: [
+      { c: 4, r: 1, type: 'tomato' },
+      { c: 4, r: 4, type: 'corn' },
+      { c: 1, r: 4, type: 'wheat' }
+    ],
+    blocks: [],
+    fences: [{ c: 2, r: 4, side: 'E', type: 'v' }]
+  },
+  {
+    id: 61, title: 'Koridor Lurus', mode: 'sokoban', difficulty: 'Mudah',
+    hint: 'Dorong crate lurus ke kanan 2x sampai bayangan crate (4,2).',
+    par: 2, solution: ['Jalan kanan x2'],
+    rabbit: { c: 1, r: 2, dir: 'right' },
+    collectables: [],
+    blocks: [],
+    fences: [],
+    pushables: [{ c: 2, r: 2, type: 'crate' }],
+    targets: [{ c: 4, r: 2, type: 'crate' }]
+  },
+  {
+    id: 62, title: 'Belokan Siku', mode: 'sokoban', difficulty: 'Mudah',
+    hint: 'Dorong ke kanan dulu, lalu memutar lewat atas untuk mendorong ke bawah sampai (3,4).',
+    par: 5, solution: ['Jalan kanan', 'Jalan atas', 'Jalan kanan', 'Jalan bawah x2'],
+    rabbit: { c: 1, r: 2, dir: 'right' },
+    collectables: [],
+    blocks: [],
+    fences: [],
+    pushables: [{ c: 2, r: 2, type: 'crate' }],
+    targets: [{ c: 3, r: 4, type: 'crate' }]
+  },
+  {
+    id: 63, title: 'Dua Jalur', mode: 'sokoban', difficulty: 'Sedang',
+    hint: 'Selesaikan baris 1 dulu (kanan x2), kembali lewat kiri-bawah, lalu baris 3 (kanan x2).',
+    par: 8, solution: ['Jalan kanan x2', 'Jalan kiri x2', 'Jalan bawah x2', 'Jalan kanan x2'],
+    rabbit: { c: 1, r: 1, dir: 'down' },
+    collectables: [],
+    blocks: [],
+    fences: [],
+    pushables: [{ c: 2, r: 1, type: 'crate' }, { c: 2, r: 3, type: 'crate' }],
+    targets: [{ c: 4, r: 1, type: 'crate' }, { c: 4, r: 3, type: 'crate' }]
+  },
+  {
+    id: 64, title: 'Memutar Pagar', mode: 'sokoban', difficulty: 'Sedang',
+    hint: 'Pagar menahan dorongan lurus! Dorong crate ke bawah dulu, kelilingi lewat kanan-bawah, selesaikan dari bawah.',
+    par: 9, solution: ['Jalan kanan', 'Jalan bawah', 'Jalan kiri', 'Jalan bawah', 'Jalan kanan x2', 'Jalan bawah x2', 'Jalan kanan', 'Jalan atas'],
+    rabbit: { c: 1, r: 1, dir: 'down' },
+    collectables: [],
+    blocks: [],
+    fences: [{ c: 2, r: 2, side: 'E', type: 'v' }],
+    pushables: [{ c: 2, r: 2, type: 'crate' }],
+    targets: [{ c: 4, r: 2, type: 'crate' }]
+  },
+  {
+    id: 65, title: 'Dorong Beruntun', mode: 'sokoban', difficulty: 'Mudah',
+    hint: 'Dua crate bertumpuk bisa didorong sekaligus! 1x dorong kanan memenangkan keduanya.',
+    par: 1, solution: ['Jalan kanan'],
+    rabbit: { c: 1, r: 3, dir: 'right' },
+    collectables: [],
+    blocks: [],
+    fences: [],
+    pushables: [{ c: 2, r: 3, type: 'crate' }, { c: 3, r: 3, type: 'crate' }],
+    targets: [{ c: 3, r: 3, type: 'crate' }, { c: 4, r: 3, type: 'crate' }]
+  },
+  {
+    id: 66, title: 'Dorong Kiri', mode: 'sokoban', difficulty: 'Mudah',
+    hint: 'Dekati crate dari kanan lewat atas, lalu dorong ke kiri 2x sampai (1,2).',
+    par: 4, solution: ['Jalan atas x2', 'Jalan kiri x2'],
+    rabbit: { c: 4, r: 4, dir: 'up' },
+    collectables: [],
+    blocks: [],
+    fences: [],
+    pushables: [{ c: 3, r: 2, type: 'crate' }],
+    targets: [{ c: 1, r: 2, type: 'crate' }]
+  },
+  {
+    id: 67, title: 'Tiga Jalur', mode: 'sokoban', difficulty: 'Sedang',
+    hint: 'Tiga baris, tiga target. Selesaikan atas→tengah→bawah, kembali lewat kolom 1 setiap kali.',
+    par: 12, solution: ['Jalan kanan x2', 'Jalan kiri x2', 'Jalan bawah', 'Jalan kanan x2', 'Jalan kiri x2', 'Jalan bawah', 'Jalan kanan x2'],
+    rabbit: { c: 1, r: 1, dir: 'down' },
+    collectables: [],
+    blocks: [],
+    fences: [],
+    pushables: [{ c: 2, r: 1, type: 'crate' }, { c: 2, r: 2, type: 'haybale' }, { c: 2, r: 3, type: 'crate' }],
+    targets: [{ c: 4, r: 1, type: 'crate' }, { c: 4, r: 2, type: 'haybale' }, { c: 4, r: 3, type: 'crate' }]
+  },
+  {
+    id: 68, title: 'Sokoban Pertama', mode: 'sokoban', difficulty: 'Sedang',
+    hint: 'Dorong crate ke bayangan crate (4,2) dan haybale ke bayangan haybale (4,3). Pagar menahan dorongan! Solusi: bawah, kanan x2, kiri x2, bawah, kanan x2.',
+    par: 8, solution: ['Jalan bawah', 'Jalan kanan x2', 'Jalan kiri x2', 'Jalan bawah', 'Jalan kanan x2'],
+    rabbit: { c: 1, r: 1, dir: 'down' },
+    collectables: [],
+    blocks: [],
+    fences: [{ c: 3, r: 2, side: 'S', type: 'h' }],
+    pushables: [{ c: 2, r: 2, type: 'crate' }, { c: 2, r: 3, type: 'haybale' }],
+    targets: [{ c: 4, r: 2, type: 'crate' }, { c: 4, r: 3, type: 'haybale' }]
+  },
+  {
+    id: 69, title: 'Lompat Pagar', mode: 'sokoban', difficulty: 'Mudah',
+    hint: 'Pagar menghalangi jalan — tapi kelinci bisa MELOMPATINYA! Lompat kanan lalu dorong.',
+    par: 2, solution: ['Lompat kanan', 'Jalan kanan'],
+    rabbit: { c: 1, r: 2, dir: 'right' },
+    collectables: [],
+    blocks: [],
+    fences: [{ c: 1, r: 2, side: 'E', type: 'v' }],
+    pushables: [{ c: 3, r: 2, type: 'crate' }],
+    targets: [{ c: 4, r: 2, type: 'crate' }]
+  },
+  {
+    id: 70, title: 'Haybale Ganda', mode: 'sokoban', difficulty: 'Sedang',
+    hint: 'Dua haybale, dua kolom. Selesaikan kolom 2 dulu, naik kembali, lalu kolom 4.',
+    par: 9, solution: ['Jalan kanan', 'Jalan bawah x2', 'Jalan atas x2', 'Jalan kanan x2', 'Jalan bawah x2'],
+    rabbit: { c: 1, r: 1, dir: 'down' },
+    collectables: [],
+    blocks: [],
+    fences: [],
+    pushables: [{ c: 2, r: 2, type: 'haybale' }, { c: 4, r: 2, type: 'haybale' }],
+    targets: [{ c: 2, r: 4, type: 'haybale' }, { c: 4, r: 4, type: 'haybale' }]
+  },
+  {
+    id: 71, title: 'Koridor Rantai', mode: 'sokoban', difficulty: 'Sedang',
+    hint: 'Koridor batu sempit: kedua crate hanya bisa didorong beruntun. 1x dorong kanan!',
+    par: 1, solution: ['Jalan kanan'],
+    rabbit: { c: 1, r: 2, dir: 'right' },
+    collectables: [],
+    blocks: [
+      { c: 1, r: 1, type: 'rock' }, { c: 2, r: 1, type: 'rock' },
+      { c: 3, r: 1, type: 'rock' }, { c: 4, r: 1, type: 'rock' },
+      { c: 1, r: 3, type: 'rock' }, { c: 2, r: 3, type: 'rock' },
+      { c: 3, r: 3, type: 'rock' }, { c: 4, r: 3, type: 'rock' }
+    ],
+    fences: [],
+    pushables: [{ c: 2, r: 2, type: 'crate' }, { c: 3, r: 2, type: 'crate' }],
+    targets: [{ c: 3, r: 2, type: 'crate' }, { c: 4, r: 2, type: 'crate' }]
+  },
+  {
+    id: 72, title: 'Putaran U', mode: 'sokoban', difficulty: 'Sulit',
+    hint: 'Rute U: dorong kanan, memutar lewat atas, dorong bawah, memutar lewat kanan-bawah, dorong kiri 2x.',
+    par: 8, solution: ['Jalan kanan', 'Jalan atas', 'Jalan kanan', 'Jalan bawah', 'Jalan kanan', 'Jalan bawah', 'Jalan kiri x2'],
+    rabbit: { c: 1, r: 2, dir: 'right' },
+    collectables: [],
+    blocks: [],
+    fences: [],
+    pushables: [{ c: 2, r: 2, type: 'crate' }],
+    targets: [{ c: 1, r: 3, type: 'crate' }]
+  },
+  {
+    id: 73, title: 'Rute Barat', mode: 'sokoban', difficulty: 'Sulit',
+    hint: 'Selesaikan crate atas dulu ke barat, lalu memutar jauh lewat utara-timur untuk crate bawah.',
+    par: 9, solution: ['Jalan kiri x2', 'Jalan atas', 'Jalan kanan x2', 'Jalan bawah x2', 'Jalan kiri x2'],
+    rabbit: { c: 4, r: 2, dir: 'left' },
+    collectables: [],
+    blocks: [],
+    fences: [],
+    pushables: [{ c: 3, r: 2, type: 'crate' }, { c: 3, r: 3, type: 'crate' }],
+    targets: [{ c: 1, r: 2, type: 'crate' }, { c: 1, r: 3, type: 'crate' }]
+  },
+  {
+    id: 74, title: 'Tikungan Pagar', mode: 'sokoban', difficulty: 'Sulit',
+    hint: 'Pagar menghadang jalan lurus ke timur. Dorong ke selatan, turun, lalu selesaikan dari barat.',
+    par: 8, solution: ['Jalan kanan', 'Jalan atas', 'Jalan kanan', 'Jalan bawah x2', 'Jalan kiri', 'Jalan bawah', 'Jalan kanan'],
+    rabbit: { c: 1, r: 2, dir: 'right' },
+    collectables: [],
+    blocks: [],
+    fences: [{ c: 3, r: 2, side: 'E', type: 'v' }],
+    pushables: [{ c: 2, r: 2, type: 'crate' }],
+    targets: [{ c: 4, r: 4, type: 'crate' }]
+  },
+  {
+    id: 75, title: 'Tiga Sekawan', mode: 'sokoban', difficulty: 'Sulit',
+    hint: 'Tiga baris (1, 2, 4). Selesaikan atas→tengah→bawah seperti level 48.',
+    par: 13, solution: ['Jalan kanan x2', 'Jalan kiri x2', 'Jalan bawah', 'Jalan kanan x2', 'Jalan kiri x2', 'Jalan bawah x2', 'Jalan kanan x2'],
+    rabbit: { c: 1, r: 1, dir: 'down' },
+    collectables: [],
+    blocks: [],
+    fences: [],
+    pushables: [{ c: 2, r: 1, type: 'crate' }, { c: 2, r: 2, type: 'haybale' }, { c: 2, r: 4, type: 'crate' }],
+    targets: [{ c: 4, r: 1, type: 'crate' }, { c: 4, r: 2, type: 'haybale' }, { c: 4, r: 4, type: 'crate' }]
+  },
+  {
+    id: 76, title: 'Lompat Ganda', mode: 'sokoban', difficulty: 'Sedang',
+    hint: 'Lompat pagar dulu untuk crate atas, lalu memutar lewat selatan-barat untuk haybale bawah.',
+    par: 10, solution: ['Lompat kanan', 'Jalan kanan', 'Jalan bawah', 'Jalan kiri x2', 'Jalan atas x3', 'Jalan kanan x2'],
+    rabbit: { c: 1, r: 3, dir: 'right' },
+    collectables: [],
+    blocks: [],
+    fences: [{ c: 1, r: 3, side: 'E', type: 'v' }],
+    pushables: [{ c: 3, r: 3, type: 'crate' }, { c: 2, r: 1, type: 'haybale' }],
+    targets: [{ c: 4, r: 3, type: 'crate' }, { c: 4, r: 1, type: 'haybale' }]
+  },
+  {
+    id: 77, title: 'Slalom Balok', mode: 'sokoban', difficulty: 'Sulit',
+    hint: 'Kelilingi balok batu lewat utara-timur, lalu dorong crate ke barat 2x.',
+    par: 8, solution: ['Jalan kanan x3', 'Jalan bawah x3', 'Jalan kiri x2'],
+    rabbit: { c: 1, r: 1, dir: 'down' },
+    collectables: [],
+    blocks: [{ c: 2, r: 2, type: 'rock' }, { c: 2, r: 3, type: 'rock' }],
+    fences: [],
+    pushables: [{ c: 3, r: 4, type: 'crate' }],
+    targets: [{ c: 1, r: 4, type: 'crate' }]
+  },
+  {
+    id: 78, title: 'Rantai Kembar', mode: 'sokoban', difficulty: 'Sedang',
+    hint: 'Dua pasang bertumpuk: masing-masing cukup 1x dorong kanan. Transit lewat barat.',
+    par: 5, solution: ['Jalan kanan', 'Jalan kiri', 'Jalan bawah x2', 'Jalan kanan'],
+    rabbit: { c: 1, r: 1, dir: 'down' },
+    collectables: [],
+    blocks: [],
+    fences: [],
+    pushables: [
+      { c: 2, r: 1, type: 'crate' }, { c: 3, r: 1, type: 'haybale' },
+      { c: 2, r: 3, type: 'crate' }, { c: 3, r: 3, type: 'haybale' }
+    ],
+    targets: [
+      { c: 3, r: 1, type: 'crate' }, { c: 4, r: 1, type: 'haybale' },
+      { c: 3, r: 3, type: 'crate' }, { c: 4, r: 3, type: 'haybale' }
+    ]
+  },
+  {
+    id: 79, title: 'Jebakan Sudut', mode: 'sokoban', difficulty: 'Sedang',
+    hint: 'Mudah tapi awas: sekali salah dorong ke sudut, crate macet selamanya! Langsung kanan x2.',
+    par: 2, solution: ['Jalan kanan x2'],
+    rabbit: { c: 1, r: 2, dir: 'right' },
+    collectables: [],
+    blocks: [],
+    fences: [],
+    pushables: [{ c: 2, r: 2, type: 'crate' }],
+    targets: [{ c: 4, r: 2, type: 'crate' }]
+  },
+  {
+    id: 80, title: 'Mahkota Sokoban', mode: 'sokoban', difficulty: 'Sulit',
+    hint: 'Final Sokoban! Selesaikan barat dulu, pagar memaksa memutar lewat timur untuk haybale.',
+    par: 8, solution: ['Jalan kiri x2', 'Jalan atas', 'Jalan kanan x2', 'Jalan atas', 'Jalan kiri x2'],
+    rabbit: { c: 4, r: 4, dir: 'left' },
+    collectables: [],
+    blocks: [],
+    fences: [{ c: 2, r: 2, side: 'N', type: 'h' }],
+    pushables: [{ c: 3, r: 4, type: 'crate' }, { c: 3, r: 2, type: 'haybale' }],
+    targets: [{ c: 1, r: 4, type: 'crate' }, { c: 1, r: 2, type: 'haybale' }]
   }
 ];
 
